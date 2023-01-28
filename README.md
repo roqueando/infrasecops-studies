@@ -60,3 +60,20 @@ COPY . /app/source_code
 ENTRYPOINT FLASK_APP=/app/source_code/app.py flask run
 ```
 
+- These points are structured on a layer architecture.
+	- First Layer: is the base of the image (`FROM ubuntu:latest`)
+	- Second Layer: is the update of the packages (`RUN apt-get update`)
+	- Third Layer is the installation of dependencies for the application run (`RUN apt-get install python`)
+	- Fourth and Fifth Layers are installation of dependencies
+	- Sixth Layer: is the copy part of your code in your machine to the image directory (`COPY . /app/source_code`)
+	- Seventh Layer: is the update of entrypoint for the command that will run (`ENTRYPOINT FLASK_APP ...`)
+
+- The quantity of layers are based on how many commands in Dockerfile will be there. The layer architecure will be caching each step of this Dockerfile so when you need to append more layers, all layers back will be in cache
+
+> ### CMD vs ENTRYPOINT 
+- CMD will be the basic command for running the program so `CMD php artisan serve` will run the Laravel application and the container will be running this
+- ENTRYPOINT is like the CMD but if you want to append new arguments to this command you can do something like:
+
+```sh
+	docker run image_with_entrypoint coverage # coverage as some another argument for the entrypoint command
+```
