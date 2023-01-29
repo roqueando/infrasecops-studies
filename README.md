@@ -2,6 +2,8 @@
 
 ### Table of Contents
 - [Docker](#docker)
+- [Docker Compose](#docker-compose)
+- [Kubernetes](#kubernetes)
 
 ### Examples
 - [Laravel Example App](laravel-example-app)
@@ -338,3 +340,46 @@ Example of a inspect from the `laravel-example-app`
     }
 ]
 ```
+
+> ### Volumes
+Docker can persist data in volums (one big example of this is, where your database will persist data, such mysql or redis), so for this you can run the following command:
+```sh
+docker volume create data_volume
+```
+This will createa a folder `data_volume` inside your machine to persist data from containers, so you can run your container mounting the volume: `docker run -v data_volume:/var/lib/mysql container_name`
+
+## Docker Compose
+This is how we can orchestrate docker container using YAML files.
+
+```yaml
+version: '3'
+
+services:
+	web:
+		image: simple_web/application:latest
+		port: 8000:8000
+	database:
+		image: postgresql:10.2
+```
+This is only applicable to running container in a single docker host, it means this is not for production.
+
+## Kubernetes
+
+Kubernetes is for container orchestration
+
+> ### Cluster
+A cluster is a set of `nodes` group together. If one node fails, other nodes will be available keeping your application working
+
+> ### Node
+A Node is a worker machine where will stay the containers
+
+> ### Master
+A master is a node that kubernetes control components, this will watcher over the nodes in cluster and it's responsible for the actual orchestration of containers in the worker nodes
+
+> ### Components
+- API Server
+- Scheduler
+- Controller
+- Container Runtime
+- kubelet 
+- etcd
